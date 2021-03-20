@@ -48,14 +48,21 @@ Cookies implements the Cookies method of the http.CookieJar interface.
 
 It returns an empty slice if the URL's scheme is not HTTP or HTTPS.
 
-#### func (*Jar) Save
+#### func (*Jar) MarshalJSON
 
 ```go
-func (j *Jar) Save() error
+func (j *Jar) MarshalJSON() ([]byte, error)
 ```
-Save saves the cookies to the persistent cookie file. Before the file is
-written, it reads any cookies that have been stored from it and merges them into
-j.
+MarshalJSON implements json.Marshaler by encoding all persistent cookies currently in the jar.
+
+
+#### func (*Jar) UnmarshalJSON
+
+```go
+func (j *Jar) UnmarshalJSON(r []byte) error 
+```
+MarshalJSON implements json.Marshaler by decoding all persistent cookies and merging them
+into the jar.
 
 #### func (*Jar) SetCookies
 
