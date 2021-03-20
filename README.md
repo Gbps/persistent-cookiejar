@@ -1,24 +1,14 @@
 # cookiejar
---
-    import "github.com/juju/persistent-cookiejar"
+```go
+import "github.com/Gbps/persistent-cookiejar"
+```
 
 Package cookiejar implements an in-memory RFC 6265-compliant http.CookieJar.
 
 This implementation is a fork of net/http/cookiejar which also implements
-methods for dumping the cookies to persistent storage and retrieving them.
+methods for dumping the cookies to and from JSON.
 
 ## Usage
-
-#### func  DefaultCookieFile
-
-```go
-func DefaultCookieFile() string
-```
-DefaultCookieFile returns the default cookie file to use for persisting cookie
-data. The following names will be used in decending order of preference:
-
-    - the value of the $GOCOOKIES environment variable.
-    - $HOME/.go-cookies
 
 #### type Jar
 
