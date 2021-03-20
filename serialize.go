@@ -22,9 +22,8 @@ func (j *Jar) MarshalJSON() ([]byte, error) {
 	return data, nil
 }
 
-// UnmarshalJSON implements json.Unmarshaler by decoding all persistent cookies
-// and merging them into the jar.
-func (j *Jar) UnmarshalJSON(r []byte) error {
+// LoadEntriesFromJson loads cookies from a json document and merges them into the container
+func (j *Jar) LoadEntriesFromJson(r []byte) error {
 	buf := bytes.NewBuffer(r)
 	decoder := json.NewDecoder(buf)
 	// Cope with old cookiejar format by just discarding

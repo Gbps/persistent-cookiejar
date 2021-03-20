@@ -46,13 +46,12 @@ func (j *Jar) MarshalJSON() ([]byte, error)
 MarshalJSON implements json.Marshaler by encoding all persistent cookies currently in the jar.
 
 
-#### func (*Jar) UnmarshalJSON
+#### func (*Jar) LoadEntriesFromJson
 
 ```go
-func (j *Jar) UnmarshalJSON(r []byte) error 
+func (j *Jar) LoadEntriesFromJson(r []byte) error 
 ```
-UnmarshalJSON implements json.Unmarshaler by decoding all persistent cookies and merging them
-into the jar.
+LoadEntriesFromJson loads cookies from a json document and merges them into the container
 
 #### func (*Jar) SetCookies
 
