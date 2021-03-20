@@ -51,7 +51,7 @@ MarshalJSON implements json.Marshaler by encoding all persistent cookies current
 ```go
 func (j *Jar) UnmarshalJSON(r []byte) error 
 ```
-UnmarshalJSON implements json.Marshaler by decoding all persistent cookies and merging them
+UnmarshalJSON implements json.Unmarshaler by decoding all persistent cookies and merging them
 into the jar.
 
 #### func (*Jar) SetCookies
