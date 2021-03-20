@@ -10,6 +10,8 @@ import (
 	"fmt"
 	"io"
 	"sort"
+
+	"golang.org/x/net/publicsuffix"
 )
 
 // MarshalJSON implements json.Marshaler by encoding all persistent cookies
@@ -22,8 +24,12 @@ func (j *Jar) MarshalJSON() ([]byte, error) {
 	return data, nil
 }
 
-// LoadEntriesFromJson loads cookies from a json document and merges them into the container
-func (j *Jar) LoadEntriesFromJson(r []byte) error {
+// UnmarshalJSON implements json.Unmarshaler by decoding all persistent cookies
+// and storing them into the
+func (j *Jar) UnmarshalJSON(r []byte) error {
+	j.entries = make(map[string]map[string]entry)
+	j.psList = publicsuffix.List
+
 	buf := bytes.NewBuffer(r)
 	decoder := json.NewDecoder(buf)
 	// Cope with old cookiejar format by just discarding
