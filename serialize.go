@@ -26,7 +26,6 @@ func (j *Jar) MarshalJSON() ([]byte, error) {
 // UnmarshalJSON implements json.Unmarshaler by decoding all persistent cookies
 // and storing them into the
 func (j *Jar) UnmarshalJSON(r []byte) error {
-	j.entries = make(map[string]map[string]entry)
 	j.psList = publicsuffix.List
 
 	buf := bytes.NewBuffer(r)
@@ -41,11 +40,11 @@ func (j *Jar) UnmarshalJSON(r []byte) error {
 		}
 		return err
 	}
-	var entries []entry
+	var entries map[string]map[string]entry
 	if err := json.Unmarshal(data, &entries); err != nil {
 		return fmt.Errorf("cookies in invalid format (error: %v)", err)
 	}
 	log.Printf("[ENTRIES] %+v", entries)
-	j.merge(entries)
+	j.entries = entries
 	return nil
 }
