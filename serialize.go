@@ -9,7 +9,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"log"
 
 	"golang.org/x/net/publicsuffix"
 )
@@ -44,7 +43,6 @@ func (j *Jar) UnmarshalJSON(r []byte) error {
 	if err := json.Unmarshal(data, &entries); err != nil {
 		return fmt.Errorf("cookies in invalid format (error: %v)", err)
 	}
-	log.Printf("[ENTRIES] %+v", entries)
 	j.entries = entries
 	return nil
 }
