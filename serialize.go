@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"io"
 	"log"
-	"sort"
 
 	"golang.org/x/net/publicsuffix"
 )
@@ -20,8 +19,7 @@ import (
 func (j *Jar) MarshalJSON() ([]byte, error) {
 	j.mu.Lock()
 	defer j.mu.Unlock()
-	// Marshaling entries can never fail.
-	data, _ := json.Marshal(j.allPersistentEntries())
+	data, _ := json.Marshal(j.entries)
 	return data, nil
 }
 
@@ -50,30 +48,4 @@ func (j *Jar) UnmarshalJSON(r []byte) error {
 	log.Printf("[ENTRIES] %+v", entries)
 	j.merge(entries)
 	return nil
-}
-
-// writeTo writes all the cookies in the jar to w
-// as a JSON array.
-func (j *Jar) writeTo(w io.Writer) error {
-	encoder := json.NewEncoder(w)
-	entries := j.allPersistentEntries()
-	if err := encoder.Encode(entries); err != nil {
-		return err
-	}
-	return nil
-}
-
-// allPersistentEntries returns all the entries in the jar, sorted by primarly by canonical host
-// name and secondarily by path length.
-func (j *Jar) allPersistentEntries() []entry {
-	var entries []entry
-	for _, submap := range j.entries {
-		for _, e := range submap {
-			if e.Persistent {
-				entries = append(entries, e)
-			}
-		}
-	}
-	sort.Sort(byCanonicalHost{entries})
-	return entries
 }
