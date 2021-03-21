@@ -12,6 +12,7 @@ package cookiejar
 import (
 	"errors"
 	"fmt"
+	"log"
 	"net"
 	"net/http"
 	"net/url"
@@ -254,6 +255,7 @@ func (j *Jar) cookies(u *url.URL, now time.Time) (cookies []*http.Cookie) {
 
 	submap := j.entries[key]
 	if submap == nil {
+		log.Printf("[COOKIE DEBUG] No submap for this key! %+v", key)
 		return cookies
 	}
 
@@ -274,11 +276,14 @@ func (j *Jar) cookies(u *url.URL, now time.Time) (cookies []*http.Cookie) {
 				e.Value = ""
 				submap[id] = e
 			}
+			log.Printf("[COOKIE DEBUG] Entry was expired: %+v", e)
 			continue
 		}
 		if !e.shouldSend(https, host, path) {
+			log.Printf("[COOKIE DEBUG] Entry was selected not to be sent: %+v", e)
 			continue
 		}
+		log.Printf("[COOKIE DEBUG] Entry is being sent: %+v", e)
 		e.LastAccess = now
 		submap[id] = e
 		selected = append(selected, e)
